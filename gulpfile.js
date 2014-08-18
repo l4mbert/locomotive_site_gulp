@@ -52,7 +52,7 @@ gulp.task('watch', function () {
 gulp.task('fonticontos3', function() {
 
   // UPDATE IAM KEYS - create 'keys' folder
-  aws = JSON.parse(fs.readFileSync('./keys/edinburgh-chamber-of-commerce-icons.aws.json'));
+  aws = JSON.parse(fs.readFileSync('./keys/updateme.aws.json'));
 
   // The delay needs to be kept, otherwise the transfer fails.
   options = { delay: 1000 }
@@ -61,8 +61,6 @@ gulp.task('fonticontos3', function() {
       .pipe(s3(aws, options));
 
 });
-
-
 
 gulp.task('default', ['watch']);
 gulp.task('font_upload', ['fonticontos3']);
