@@ -14,6 +14,7 @@ var prefix = require('gulp-autoprefixer');
 var paths = {
   scripts_in: ['../locomotive_sites/app/assets/javascripts/*.coffee'],
   scripts_out: '../locomotive_sites/public/javascripts',
+  sass_watch: ['../locomotive_sites/app/assets/stylesheets/**/**'],
   sass_in: ['../locomotive_sites/app/assets/stylesheets/*.scss'],
   sass_out: '../locomotive_sites/public/stylesheets',
   public_assets: ['../locomotive_sites/public/**'],
@@ -48,7 +49,7 @@ gulp.task('sass', function () {
 //**********************************************************************
 gulp.task('watch', function () {
   gulp.watch(paths.scripts_in, ['scripts']);
-  gulp.watch(paths.sass_in, ['sass']);
+  gulp.watch(paths.sass_watch, ['sass']);
 });
 
 //**********************************************************************
