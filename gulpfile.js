@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var fs = require("fs");
 var concat = require('gulp-concat');
 var coffee = require('gulp-coffee');
 var sass = require('gulp-ruby-sass');
@@ -9,18 +10,21 @@ var prefix = require('gulp-autoprefixer');
 var minifyCSS = require('gulp-minify-css');
 var order = require('gulp-order');
 var uglify = require('gulp-uglify');
+var encrypt = require("gulp-simplecrypt").encrypt;
+var decrypt = require("gulp-simplecrypt").decrypt;
 
 //**********************************************************************
 // PROJECT DIRECTORIES
 //**********************************************************************
+var project_base_directory = '../locomotive_sites';
 var paths = {
-  scripts_in: ['../locomotive_sites/app/assets/javascripts/**/*.coffee'],
-  scripts_out: '../locomotive_sites/public/javascripts',
-  sass_watch: ['../locomotive_sites/app/assets/stylesheets/**/**'],
-  sass_in: ['../locomotive_sites/app/assets/stylesheets/*.scss'],
-  sass_out: '../locomotive_sites/public/stylesheets',
-  public_assets: ['../locomotive_sites/public/**'],
-  font_assets: ['../locomotive_sites/public/fonts/**']
+  scripts_in: [project_base_directory+'/app/assets/javascripts/**/*.coffee'],
+  scripts_out: project_base_directory+'/public/javascripts',
+  sass_watch: [project_base_directory+'/app/assets/stylesheets/**/**'],
+  sass_in: [project_base_directory+'/app/assets/stylesheets/*.scss'],
+  sass_out: project_base_directory+'/public/stylesheets',
+  public_assets: [project_base_directory+'/public/**'],
+  font_assets: [project_base_directory+'/public/fonts/**']
 };
 
 //**********************************************************************
@@ -35,7 +39,7 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest(paths.scripts_out));
 });
 gulp.task('scripts-production', function(){
-  return gulp.src('../locomotive_sites/public/javascripts/**/*.js')
+  return gulp.src(project_base_directory+'/public/javascripts/**/*.js')
     .pipe(order([
       'vendor/*.js',
       'widgets/*.js',
@@ -57,9 +61,8 @@ gulp.task('sass', function () {
       .pipe(gulp.dest(paths.sass_out))
 });
 gulp.task('sass-production', function () {
-  console.log(paths.sass_out+"/*.css");
   gulp.src(paths.sass_out+"/*.css")
-      .pipe(minifyCSS({keepBreaks:true}))
+      .pipe(minifyCSS())
       .pipe(gulp.dest(paths.sass_out+"/production/"))
 });
 
@@ -69,6 +72,28 @@ gulp.task('sass-production', function () {
 gulp.task('watch', function () {
   gulp.watch(paths.scripts_in, ['scripts']);
   gulp.watch(paths.sass_watch, ['sass']);
+});
+
+//**********************************************************************
+// AWS KEY ENCRYPTION AND DECRYPTION
+//**********************************************************************
+gulp.task('encrypt-keys', function() {
+  encryption_details = JSON.parse(fs.readFileSync('encryption-details.json'));
+  gulp.src('keys/*.aws.json')
+    .pipe(encrypt({
+      password: encryption_details.password,
+      salt: encryption_details.salt
+    }))
+    .pipe(gulp.dest('keys/encrypted/'))
+});
+gulp.task('decrypt-keys', function() {
+  encryption_details = JSON.parse(fs.readFileSync('encryption-details.json'));
+  gulp.src('keys/encrypted/*.aws.json')
+    .pipe(decrypt({
+      password: encryption_details.password,
+      salt: encryption_details.salt
+    }))
+    .pipe(gulp.dest('keys/'))
 });
 
 //**********************************************************************
@@ -107,3 +132,4 @@ gulp.task('assets-to-s3', function() {
 
 
 gulp.task('default', ['watch']);
+gulp.task('production', ['sass-production', 'scripts-production']);

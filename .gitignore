@@ -1,3 +1,4 @@
 .sass-cache
 keys/*.aws.json
 node_modules
+encryption-details.json
