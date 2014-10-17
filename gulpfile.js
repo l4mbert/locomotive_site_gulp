@@ -1,18 +1,20 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-// var concat = require('gulp-concat'); // Production task needs to be created
-var fs = require("fs");
+var concat = require('gulp-concat');
 var coffee = require('gulp-coffee');
 var sass = require('gulp-ruby-sass');
 var plumber = require('gulp-plumber');
 var s3 = require("gulp-s3");
 var prefix = require('gulp-autoprefixer');
+var minifyCSS = require('gulp-minify-css');
+var order = require('gulp-order');
+var uglify = require('gulp-uglify');
 
 //**********************************************************************
 // PROJECT DIRECTORIES
 //**********************************************************************
 var paths = {
-  scripts_in: ['../locomotive_sites/app/assets/javascripts/*.coffee'],
+  scripts_in: ['../locomotive_sites/app/assets/javascripts/**/*.coffee'],
   scripts_out: '../locomotive_sites/public/javascripts',
   sass_watch: ['../locomotive_sites/app/assets/stylesheets/**/**'],
   sass_in: ['../locomotive_sites/app/assets/stylesheets/*.scss'],
@@ -25,12 +27,23 @@ var paths = {
 // COFFEE -> JAVASCRIPT
 //**********************************************************************
 gulp.task('scripts', function(){
-
   return gulp.src(paths.scripts_in)
     .pipe(plumber())
     .pipe(coffee({
       bare: true
     }))
+    .pipe(gulp.dest(paths.scripts_out));
+});
+gulp.task('scripts-production', function(){
+  return gulp.src('../locomotive_sites/public/javascripts/**/*.js')
+    .pipe(order([
+      'vendor/*.js',
+      'widgets/*.js',
+      'BreakpointDetection.js',
+      '*.js'
+    ]))
+    .pipe(concat("production.js"))
+    .pipe(uglify())
     .pipe(gulp.dest(paths.scripts_out));
 });
 
@@ -42,6 +55,12 @@ gulp.task('sass', function () {
       .pipe(sass({sourcemap: false}))
       .pipe(prefix())
       .pipe(gulp.dest(paths.sass_out))
+});
+gulp.task('sass-production', function () {
+  console.log(paths.sass_out+"/*.css");
+  gulp.src(paths.sass_out+"/*.css")
+      .pipe(minifyCSS({keepBreaks:true}))
+      .pipe(gulp.dest(paths.sass_out+"/production/"))
 });
 
 //**********************************************************************
