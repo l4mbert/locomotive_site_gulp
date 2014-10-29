@@ -1,14 +1,16 @@
-locomotive_site_gulp
-====================
+# Gukp for Locomotive sites
 
-A Gulp file to be used when developing Locomotive sites.  This file allows you to do the following:
+A Gulp file to be used when developing Locomotive sites.  The following tasks are available:
 
-* Compile SASS and CoffeeScript files.
-* Upload font files to S3.
+* [watch](#watch-task)
+* `production`
+* `upload-assets-to-s3`
 
 ## Where to place the repository
 
 Please make sure that the folder of the 'locomotive_site_gulp' respository is located on the same level as the 'locomotive_sites' respository.  The Gulpfile is kept seperate from 'locomotive_sites' as there is a conflict with the Gems in use.
+
+## Watch - task
 
 ## Amazon IAM keys
 
