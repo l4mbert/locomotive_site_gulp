@@ -6,6 +6,8 @@ A Gulp file to be used when developing Locomotive sites.  The following tasks ar
 * [production](#production---task)
 * [upload-fonts-to-s3](#upload-fonts-to-s3---task)
 * [upload-assets-to-s3](#upload-assets-to-s3---task)
+* [encrypt-keys](#encrypt-keys---task)
+* [decrypt-keys](#decrypt-keys---task)
 
 Hopefully the tasks provided through the master branch of this repository fulfils what you need.  If not, and you need to modify the Gulpfile, please create a new branch with the name of the project.
 
@@ -28,7 +30,7 @@ This task will prepare site assets for the production environment.  It will curr
 * Minify the site CSS file
 * Concatenate and uglify the site JavaScript.
 
-The final files **will be placed in a folder titled 'production'**, sitting in either `\public\javascript` or `\public\stylesheets`.
+The final files **will be placed in a folder titled 'production'**, sitting in either _/public/javascript_ or _/public/stylesheets_.
 
 ### JavaScript concatenation order
 
@@ -47,6 +49,16 @@ If you are creating a site which is purely Locomotive, the only assets you will 
 If you are creating a site which also has a Wordpress blog, or shares it's assets with another system, then you may need to move all public assets to S3.  To do so, use this task.  Please read about [Creating and specifying](#creating-and-specifying-amazon-s3-keys) S3 authentication details.
 
 _Please_ note that Locomotive does a good job of storing assets on S3.  If you don't need to share assets with another system, it's best to let Locomotive handle assets.
+
+## encrypt-keys - task
+
+`$ gulp encrypt-keys`
+
+In order to store Amazon S3 keys in GitHub we must encrypt them.  This task will encrypt any files which end in '.aws.json', and move them to the folder titled 'encrypted'.  If [you create a new Amazon S3 key file](#creating-and-specifying-amazon-s3-keys), please encrypt it.
+
+## decrypt-keys - task
+
+`$ gulp decrypt-keys`
 
 ## Creating and specifying Amazon S3 keys
 
