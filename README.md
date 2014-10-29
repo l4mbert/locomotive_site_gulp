@@ -62,3 +62,5 @@ In order to store Amazon S3 keys in GitHub we must encrypt them.  This task will
 
 `$ gulp decrypt-keys`
 
+This task will decrypt all Amazon S3 key files located in the encrypted folder.
+
