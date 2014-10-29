@@ -11,9 +11,11 @@ A Gulp file to be used when developing Locomotive sites.  The following tasks ar
 
 Hopefully the tasks provided through the master branch of this repository fulfils what you need.  If not, and you need to modify the Gulpfile, please create a new branch with the name of the project.
 
-## Where to place the repository
+## Where to place this repository
 
-Please make sure that the folder of the 'locomotive_site_gulp' respository is located on the same level as the 'locomotive_sites' respository.  The Gulpfile is kept seperate from 'locomotive_sites' as there is a conflict with the Gems in use.
+Please make sure that you clone, and locate this repository on the same directory level as the 'locomotive_sites' respository.
+
+The Gulpfile (in this repository) is kept seperate from 'locomotive_sites' as it allows us to manage and improve it in isolation.
 
 ## watch - task
 
