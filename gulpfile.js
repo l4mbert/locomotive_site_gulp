@@ -1,17 +1,19 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var fs = require("fs");
-var concat = require('gulp-concat');
-var coffee = require('gulp-coffee');
-var sass = require('gulp-ruby-sass');
-var plumber = require('gulp-plumber');
-var s3 = require("gulp-s3");
-var prefix = require('gulp-autoprefixer');
-var minifyCSS = require('gulp-minify-css');
-var order = require('gulp-order');
-var uglify = require('gulp-uglify');
-var encrypt = require("gulp-simplecrypt").encrypt;
-var decrypt = require("gulp-simplecrypt").decrypt;
+var gulp = require('gulp'),
+    gutil = require('gulp-util'),
+    fs = require("fs"),
+    gulpIgnore = require('gulp-ignore'),
+    concat = require('gulp-concat'),
+    coffee = require('gulp-coffee'),
+    sass = require('gulp-ruby-sass'),
+    plumber = require('gulp-plumber'),
+    s3 = require("gulp-s3"),
+    prefix = require('gulp-autoprefixer'),
+    minifyCSS = require('gulp-minify-css'),
+    order = require('gulp-order'),
+    uglify = require('gulp-uglify'),
+    encrypt = require("gulp-simplecrypt").encrypt,
+    decrypt = require("gulp-simplecrypt").decrypt,
+    argv = require('yargs').argv;
 
 //**********************************************************************
 // PROJECT DIRECTORIES
@@ -48,7 +50,7 @@ gulp.task('scripts-production', function(){
     ]))
     .pipe(concat("production.js"))
     .pipe(uglify())
-    .pipe(gulp.dest(paths.scripts_out));
+    .pipe(gulp.dest(paths.scripts_out+"/production/"));
 });
 
 //**********************************************************************
@@ -64,14 +66,6 @@ gulp.task('sass-production', function () {
   gulp.src(paths.sass_out+"/*.css")
       .pipe(minifyCSS())
       .pipe(gulp.dest(paths.sass_out+"/production/"))
-});
-
-//**********************************************************************
-// WATCHERS -- RUNS SCRIPT AND SASS TASKS
-//**********************************************************************
-gulp.task('watch', function () {
-  gulp.watch(paths.scripts_in, ['scripts']);
-  gulp.watch(paths.sass_watch, ['sass']);
 });
 
 //**********************************************************************
@@ -102,8 +96,12 @@ gulp.task('decrypt-keys', function() {
 //**********************************************************************
 gulp.task('fonts-to-s3', function() {
 
-  // UPDATE IAM KEYS - create 'keys' folder
-  aws = JSON.parse(fs.readFileSync('./keys/xxx.aws.json'));
+  if(! argv.key_file) {
+    console.log('\n\nPlease enter the filename of the key you would like to use.\n\n');
+    return;
+  }
+
+  aws = JSON.parse(fs.readFileSync('./keys/'+argv.key_file));
 
   options = {
     delay: 1000, // The delay needs to be kept, otherwise the transfer fails
@@ -121,13 +119,27 @@ gulp.task('fonts-to-s3', function() {
 //**********************************************************************
 gulp.task('assets-to-s3', function() {
 
-  aws = JSON.parse(fs.readFileSync('./keys/xxx.aws.json'));
+  if(! argv.key_file) {
+    console.log('\n\nPlease enter the filename of the key you would like to use.\n\n');
+    return;
+  }
 
-  options = { delay: 1000 } // The delay needs to be kept, otherwise the transfer fails.
+  aws = JSON.parse(fs.readFileSync('./keys/'+argv.key_file));
+
+  options = { delay: 250 } // The delay needs to be kept, otherwise the transfer fails.
 
   gulp.src(paths.public_assets, {read: false})
-      .pipe(s3(aws, options));
+    .pipe(gulpIgnore.exclude('*.gz')) // We want to upload gzip files with a specific header
+    .pipe(s3(aws, options));
 
+});
+
+//**********************************************************************
+// WATCHERS -- RUNS SCRIPT AND SASS TASKS
+//**********************************************************************
+gulp.task('watch', function () {
+  gulp.watch(paths.scripts_in, ['scripts']);
+  gulp.watch(paths.sass_watch, ['sass']);
 });
 
 
