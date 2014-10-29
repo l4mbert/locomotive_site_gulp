@@ -94,7 +94,7 @@ gulp.task('decrypt-keys', function() {
 // FONT ICON UPLOAD
 // Upload font icons to S3.  You need to specify IAM keys.
 //**********************************************************************
-gulp.task('fonts-to-s3', function() {
+gulp.task('upload-fonts-to-s3', function() {
 
   if(! argv.key_file) {
     console.log('\n\nPlease enter the filename of the key you would like to use.\n\n');
