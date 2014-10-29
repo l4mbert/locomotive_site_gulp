@@ -42,13 +42,13 @@ If you need to modify (or add to) the JavaScript concatenation order, please cre
 
 `$ gulp upload-fonts-to-s3 --key_file=your-keys-files.aws.json`
 
-If you are creating a site which is purely Locomotive, the only assets you will need to host on S3 are the font files.  Use this task to upload font files to S3.  Please read about [Creating and specifying](#creating-and-specifying-amazon-s3-keys) S3 authentication details.
+If you are creating a site which is purely Locomotive, the only assets you will need to host on S3 are the font files.  Use this task to upload font files to S3.
 
 ## upload-assets-to-s3 - task
 
 `$ gulp upload-assets-to-s3 --key_file=your-keys-files.aws.json`
 
-If you are creating a site which also has a Wordpress blog, or shares it's assets with another system, then you may need to move all public assets to S3.  To do so, use this task.  Please read about [Creating and specifying](#creating-and-specifying-amazon-s3-keys) S3 authentication details.
+If you are creating a site which also has a Wordpress blog, or shares it's assets with another system, then you may need to move all public assets to S3.  To do so, use this task.
 
 _Please_ note that Locomotive does a good job of storing assets on S3.  If you don't need to share assets with another system, it's best to let Locomotive handle assets.
 
@@ -56,21 +56,9 @@ _Please_ note that Locomotive does a good job of storing assets on S3.  If you d
 
 `$ gulp encrypt-keys`
 
-In order to store Amazon S3 keys in GitHub we must encrypt them.  This task will encrypt any files which end in '.aws.json', and move them to the folder titled 'encrypted'.  If [you create a new Amazon S3 key file](#creating-and-specifying-amazon-s3-keys), please encrypt it.
+In order to store Amazon S3 keys in GitHub we must encrypt them.  This task will encrypt any files which end in '.aws.json', and move them to the folder titled 'encrypted'.  If you create a new Amazon S3 key file, please encrypt it.
 
 ## decrypt-keys - task
 
 `$ gulp decrypt-keys`
 
-## Creating and specifying Amazon S3 keys
-
-I currently keep Amazon IAM keys within a folder named 'keys', in the repository folder.  Gitignore is set up to ignore files within this folder, and the Gulpfile is setup to reference the 'keys' folder.  The key file shoud be a `.json` file, and have the contents:
-
-```
-{
-  "key": "INSERTKEY",
-  "secret": "INSERTSECRET",
-  "bucket": "INSERTBUCKETNAME",
-  "region": "eu-west-1"
-}
-```
