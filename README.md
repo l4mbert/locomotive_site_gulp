@@ -1,16 +1,20 @@
-# Gukp for Locomotive sites
+# Gulp for Locomotive sites
 
 A Gulp file to be used when developing Locomotive sites.  The following tasks are available:
 
-* [watch](#watch-task)
-* `production`
-* `upload-assets-to-s3`
+* [watch](#watch---task)
+* [production](#production---task)
+* [upload-assets-to-s3](#upload-assets-to-s3---task)
 
 ## Where to place the repository
 
 Please make sure that the folder of the 'locomotive_site_gulp' respository is located on the same level as the 'locomotive_sites' respository.  The Gulpfile is kept seperate from 'locomotive_sites' as there is a conflict with the Gems in use.
 
-## Watch - task
+## watch - task
+
+## production - task
+
+## upload-assets-to-s3 - task
 
 ## Amazon IAM keys
 
