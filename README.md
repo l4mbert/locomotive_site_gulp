@@ -15,9 +15,13 @@ Please make sure that the folder of the 'locomotive_site_gulp' respository is lo
 
 ## watch - task
 
+`$ gulp watch`
+
 The default task, which will compile SASS and CoffeeScript files upon change.
 
 ## production - task
+
+`$ gulp production`
 
 This task will prepare site assets for the production environment.  It will currently do the following:
 
@@ -32,11 +36,15 @@ If you need to modify (or add to) the JavaScript concatenation order, please cre
 
 ## upload-fonts-to-s3 - task
 
+`$ gulp upload-fonts-to-s3 --key_file=your-keys-files.aws.json`
+
 If you are creating a site which is purely Locomotive, the only assets you will need to host on S3 are the font files.  Use this task to upload font files to S3.  Please read about [Creating and specifying](#creating-and-specifying-amazon-s3-keys) S3 authentication details.
 
 ## upload-assets-to-s3 - task
 
-If you are creating a site which also has a blog, or shares it's assets with another system, then you may need to move all public assets to S3.  To do so, use this task.  Please read about [Creating and specifying](#creating-and-specifying-amazon-s3-keys) S3 authentication details.
+`$ gulp upload-assets-to-s3 --key_file=your-keys-files.aws.json`
+
+If you are creating a site which also has a Wordpress blog, or shares it's assets with another system, then you may need to move all public assets to S3.  To do so, use this task.  Please read about [Creating and specifying](#creating-and-specifying-amazon-s3-keys) S3 authentication details.
 
 _Please_ note that Locomotive does a good job of storing assets on S3.  If you don't need to share assets with another system, it's best to let Locomotive handle assets.
 
