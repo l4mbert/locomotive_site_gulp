@@ -13,7 +13,9 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     encrypt = require("gulp-simplecrypt").encrypt,
     decrypt = require("gulp-simplecrypt").decrypt,
-    argv = require('yargs').argv;
+    argv = require('yargs').argv,
+    rimraf = require('gulp-rimraf'),
+    runSequence = require('run-sequence');
 
 //**********************************************************************
 // PROJECT DIRECTORIES
@@ -41,6 +43,7 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest(paths.scripts_out));
 });
 gulp.task('scripts-production', function(){
+
   return gulp.src(project_base_directory+'/public/javascripts/**/*.js')
     .pipe(order([
       'vendor/*.js',
@@ -48,6 +51,7 @@ gulp.task('scripts-production', function(){
       'BreakpointDetection.js',
       '*.js'
     ]))
+    .pipe(gulpIgnore.exclude('production/production.js'))
     .pipe(concat("production.js"))
     .pipe(uglify())
     .pipe(gulp.dest(paths.scripts_out+"/production/"));
@@ -135,6 +139,15 @@ gulp.task('assets-to-s3', function() {
 });
 
 //**********************************************************************
+// PRODUCTION - HOUSEKEEPING
+// When updating production assets, we must delete the production Javascript.
+//**********************************************************************
+gulp.task('delete-production', function(){
+  return gulp.src(project_base_directory+'/public/javascripts/production/production.js', { read: false }) // much faster
+    .pipe(rimraf({ force: true }));
+});
+
+//**********************************************************************
 // WATCHERS -- RUNS SCRIPT AND SASS TASKS
 //**********************************************************************
 gulp.task('watch', function () {
@@ -144,4 +157,6 @@ gulp.task('watch', function () {
 
 
 gulp.task('default', ['watch']);
-gulp.task('production', ['sass-production', 'scripts-production']);
+gulp.task('production', function(callback){
+  runSequence('delete-production', 'sass-production', 'scripts-production', callback);
+});
