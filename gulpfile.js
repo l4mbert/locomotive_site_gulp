@@ -24,7 +24,7 @@ var project_base_directory = '../locomotive_sites';
 var paths = {
   scripts_in: [project_base_directory+'/app/assets/javascripts/**/*.coffee'],
   scripts_out: project_base_directory+'/public/javascripts',
-  sass_watch: [project_base_directory+'/app/assets/stylesheets/**/**'],
+  sass_watch: [project_base_directory+'/app/assets/stylesheets/**/**/**'],
   sass_in: [project_base_directory+'/app/assets/stylesheets/*.scss'],
   sass_out: project_base_directory+'/public/stylesheets',
   public_assets: [project_base_directory+'/public/**'],
