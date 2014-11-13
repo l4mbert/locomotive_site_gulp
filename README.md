@@ -1,6 +1,6 @@
 # Gulp for Locomotive sites
 
-A Gulp file to be used when developing Locomotive sites.  The following tasks are available:
+A Gulp file to be used when developing predominantly Locomotive sites (or other similiar rails projects).  The following tasks are available:
 
 * [watch](#watch---task)
 * [production](#production---task)
@@ -9,13 +9,17 @@ A Gulp file to be used when developing Locomotive sites.  The following tasks ar
 * [encrypt-keys](#encrypt-keys---task)
 * [decrypt-keys](#decrypt-keys---task)
 
-Hopefully the tasks provided through the master branch of this repository fulfils what you need.  If not, and you need to modify the Gulpfile, please create a new branch with the name of the project.
+Please **create a new branch** for each project.  The master branch should only serve as a reference to be cloned when starting a new project.  Older sites may use a different Gulp setup, so what is on the Master branch may not work with an older project.
 
-## Where to place this repository
+### Where to place this repository
 
 Please make sure that you clone, and locate this repository on the same directory level as the 'locomotive_sites' respository.
 
 The Gulpfile (in this repository) is kept seperate from 'locomotive_sites' as it allows us to manage and improve it in isolation.
+
+### Amazon AWS keys
+
+Before uploading assets to S3, you must create a IAM user, and give it permisions to edit a bucket held in S3.  Please copy a AWS key within the _/keys_ folder and add your newly created user details and bucket name to it.  It's good practice to name the IAM user, S3 bucket, and key file the same.
 
 ## watch - task
 
