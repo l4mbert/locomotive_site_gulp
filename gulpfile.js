@@ -20,12 +20,12 @@ var gulp = require('gulp'),
 //**********************************************************************
 // PROJECT DIRECTORIES
 //**********************************************************************
-var project_base_directory = '../locomotive_sites';
+var project_base_directory = '../nts-volunteers';
 var paths = {
   scripts_in: [project_base_directory+'/app/assets/javascripts/**/*.coffee'],
   scripts_out: project_base_directory+'/public/javascripts',
   sass_watch: [project_base_directory+'/app/assets/stylesheets/**/**/**'],
-  sass_in: [project_base_directory+'/app/assets/stylesheets/*.scss'],
+  sass_in: [project_base_directory+'/app/assets/stylesheets/*.scss', '!'+project_base_directory+'/app/assets/stylesheets/active_admin*'],
   sass_out: project_base_directory+'/public/stylesheets',
   public_assets: [project_base_directory+'/public/**'],
   font_assets: [project_base_directory+'/public/fonts/**']
@@ -62,6 +62,7 @@ gulp.task('scripts-production', function(){
 //**********************************************************************
 gulp.task('sass', function () {
   gulp.src(paths.sass_in)
+      .pipe(plumber())
       .pipe(sass({sourcemap: false}))
       .pipe(prefix())
       .pipe(gulp.dest(paths.sass_out))
