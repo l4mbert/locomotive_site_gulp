@@ -48,8 +48,8 @@ gulp.task('scripts-production', function(){
     .pipe(order([
       'vendor/*.js',
       'widgets/*.js',
-      'BreakpointDetection.js',
-      '*.js'
+      'map_options.js',
+      'application.js'
     ]))
     .pipe(gulpIgnore.exclude('production/production.js'))
     .pipe(concat("production.js"))
