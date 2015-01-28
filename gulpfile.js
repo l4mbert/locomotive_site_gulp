@@ -62,6 +62,7 @@ gulp.task('scripts-production', function(){
 //**********************************************************************
 gulp.task('sass', function () {
   gulp.src(paths.sass_in)
+      .pipe(plumber())
       .pipe(sass({sourcemap: false}))
       .pipe(prefix())
       .pipe(gulp.dest(paths.sass_out))
