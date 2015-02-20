@@ -31,9 +31,10 @@ The default task, which will compile SASS and CoffeeScript files upon change.
 
 `$ gulp production`
 
-This task will prepare site assets for the production environment.  It will currently do the following:
+This task will prepare site assets for the production environment.  This is done on `watch` now, so you shouldn't have to use it.  It will currently do the following:
 
-* Minify the site CSS file
+* Delete old Javascript files.
+* Minify the site CSS file.
 * Concatenate and uglify the site JavaScript.
 
 The final files **will be placed in a folder titled 'production'**, sitting in either _/public/javascript_ or _/public/stylesheets_.

@@ -34,7 +34,11 @@ var paths = {
 //**********************************************************************
 // COFFEE -> JAVASCRIPT
 //**********************************************************************
-gulp.task('scripts', function(){
+gulp.task('scripts', function(callback){
+  runSequence('scripts-development', 'delete-production', 'scripts-production', callback);
+});
+
+gulp.task('scripts-development', function(){
   return gulp.src(paths.scripts_in)
     .pipe(plumber())
     .pipe(coffee({
@@ -60,14 +64,18 @@ gulp.task('scripts-production', function(){
 //**********************************************************************
 // SASS -> CSS
 //**********************************************************************
-gulp.task('sass', function () {
-  gulp.src(paths.sass_in)
+gulp.task('sass', function(callback){
+  runSequence('sass-development', 'sass-production', callback);
+});
+
+gulp.task('sass-development', function () {
+  return gulp.src(paths.sass_in)
       .pipe(sass({sourcemap: false}))
       .pipe(prefix())
       .pipe(gulp.dest(paths.sass_out))
 });
 gulp.task('sass-production', function () {
-  gulp.src(paths.sass_out+"/*.css")
+  return gulp.src(paths.sass_out+"/*.css")
       .pipe(minifyCSS())
       .pipe(gulp.dest(paths.sass_out+"/production/"))
 });
