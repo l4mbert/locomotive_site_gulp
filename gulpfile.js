@@ -20,7 +20,7 @@ var gulp = require('gulp'),
 //**********************************************************************
 // PROJECT DIRECTORIES
 //**********************************************************************
-var project_base_directory = '../locomotive_sites';
+var project_base_directory = '../sccr-quiz';
 var paths = {
   scripts_in: [project_base_directory+'/app/assets/javascripts/**/*.coffee'],
   scripts_out: project_base_directory+'/public/javascripts',
