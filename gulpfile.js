@@ -44,14 +44,13 @@ gulp.task('scripts', function(){
 });
 gulp.task('scripts-production', function(){
 
-  return gulp.src(project_base_directory+'/public/javascripts/**/*.js')
+  return gulp.src([project_base_directory+'/public/javascripts/**/*.js', '!' + project_base_directory + '/public/javascripts/production/production.js'])
     .pipe(order([
       'vendor/*.js',
       'widgets/*.js',
       'BreakpointDetection.js',
       '*.js'
     ]))
-    .pipe(gulpIgnore.exclude('production/production.js'))
     .pipe(concat("production.js"))
     .pipe(uglify())
     .pipe(gulp.dest(paths.scripts_out+"/production/"));
@@ -62,6 +61,7 @@ gulp.task('scripts-production', function(){
 //**********************************************************************
 gulp.task('sass', function () {
   gulp.src(paths.sass_in)
+      .pipe(plumber())
       .pipe(sass({sourcemap: false}))
       .pipe(prefix())
       .pipe(gulp.dest(paths.sass_out))
